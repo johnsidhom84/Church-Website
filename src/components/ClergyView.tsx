@@ -1,151 +1,9 @@
 import { motion } from 'motion/react';
 import React from 'react';
-import { Phone, Heart, UserCheck, Calendar } from 'lucide-react';
+import { UserCheck, Calendar } from 'lucide-react';
+import { CLERGY_DATA } from '../constants/priests';
 
-const CLERGY = [
-  {
-    name: 'أبونا القمص مرقس داود',
-    ordination: '1948 م.',
-    promotion: '12 سبتمبر 1975 م.',
-    status: 'تنيح',
-    note: '',
-    image: '/src/assets/images/fr_markos_dawoud.jpg'
-  },
-  {
-    name: 'أبونا القمص اسطفانوس عازر سرجيوس',
-    ordination: '24 مايو 1966 م.',
-    promotion: '19 فبراير 1988 م.',
-    status: 'تنيح',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص يوحنا جرجس',
-    ordination: '',
-    promotion: '14 نوفمبر 1975 م.',
-    status: 'تنيح',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص ميخائيل إبراهيم يوسف',
-    ordination: '16 سبتمبر 1951 م.',
-    promotion: 'مايو 1952 م.',
-    status: 'تنيح',
-    note: '',
-    image: '/src/assets/images/fr_mikhail_ibrahim.jpg'
-  },
-  {
-    name: 'أبونا القمص مينا ميخائيل',
-    ordination: '28 مايو 1972 م.',
-    promotion: '2 مارس 1975 م.',
-    status: 'سابق',
-    note: 'يخدم بكنيسة أخرى'
-  },
-  {
-    name: 'أبونا القمص ميخائيل نجيب غالي',
-    ordination: '13 إبريل 1975 م.',
-    promotion: '3 يونيو 2003 م.',
-    status: 'تنيح',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص لوقا قسطنطين عوض الله',
-    ordination: '14 يناير 1979 م.',
-    promotion: '14 نوفمبر 1998 م.',
-    status: 'تنيح',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص بيمن جورج سعيد عبد السيد',
-    ordination: '19 فبراير 1988 م.',
-    promotion: '17 مارس 2017 م.',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص برسوم بشرى جرجس',
-    ordination: '19 فبراير 1988 م.',
-    promotion: '17 مارس 2017 م.',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القمص مرقس فتحي صادق حنا',
-    ordination: '19 يونيو 1994 م.',
-    promotion: '3 مارس 2013 م.',
-    status: 'سابق',
-    note: 'يخدم بكنيسة أخرى'
-  },
-  {
-    name: 'أبونا القس يوسف يوسف يوسف رزق',
-    ordination: '14 نوفمبر 1999 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس كيرلس كمال فخري سوريال',
-    ordination: '7 يونيو 2009 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس أنطونيوس مفيد محارب',
-    ordination: '7 يونيو 2009 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس ميخائيل مقار ثابت قلته',
-    ordination: '7 يونيو 2009 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس مرقس منير سمير ميخائيل',
-    ordination: '16 نوفمبر 2014 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس يوحنا محفوظ',
-    ordination: '16 نوفمبر 2014 م.',
-    promotion: '',
-    status: 'تنيح',
-    note: ''
-  },
-  {
-    name: 'أبونا القس متي جوزيف',
-    ordination: '19 فبراير 2026 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس لوقا فهمي',
-    ordination: '19 فبراير 2026 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس يوحنا سعد',
-    ordination: '19 فبراير 2026 م.',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  },
-  {
-    name: 'أبونا القس بيشوي عهدى',
-    ordination: '',
-    promotion: '',
-    status: 'حالي',
-    note: ''
-  }
-];
+const CLERGY = CLERGY_DATA;
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -197,7 +55,8 @@ export default function ClergyView() {
             <motion.div 
               key={i}
               variants={itemVariants}
-              className="custom-panel space-y-4 !mb-0"
+              whileHover={{ scale: 1.02 }}
+              className="custom-panel space-y-4 !mb-0 transition-transform"
             >
               <div className="flex items-center gap-4 border-b border-stone-50 pb-4">
                 <div className="w-12 h-12 bg-gold/10 rounded-2xl flex items-center justify-center text-gold">
@@ -240,15 +99,20 @@ export default function ClergyView() {
             <motion.div 
               key={i}
               variants={itemVariants}
+              whileHover={{ scale: 1.02 }}
               className={`p-6 rounded-[2rem] border transition-all space-y-4 flex flex-col items-center text-center ${
                 priest.status === 'تنيح' 
                 ? 'bg-gold/5 border-gold/10 shadow-sm' 
                 : 'bg-transparent border-stone-200/60'
               }`}
             >
-              {priest.image && (
-                <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-white shadow-md mb-2">
-                  <img src={priest.image} alt={priest.name} className="w-full h-full object-cover" />
+              {priest.image ? (
+                <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-white shadow-md mb-2 bg-white flex items-center justify-center">
+                  <img src={priest.image} alt={priest.name} className="w-full h-full object-contain" />
+                </div>
+              ) : (
+                <div className="w-32 h-32 rounded-2xl bg-stone-100 flex items-center justify-center mb-2 border-4 border-white shadow-sm">
+                   <Calendar className="w-10 h-10 text-stone-200" />
                 </div>
               )}
               

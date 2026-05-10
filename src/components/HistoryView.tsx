@@ -1,9 +1,50 @@
-import { motion } from 'motion/react';
-import { BookOpen, Calendar, Award, Building2, Users, Star, ShieldCheck, Image as ImageIcon } from 'lucide-react';
+import { motion, AnimatePresence } from 'motion/react';
+import { BookOpen, Calendar, Award, Building2, Users, Star, ShieldCheck, Image as ImageIcon, Loader2, X, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 import heroImg from '../assets/images/hero.jpg';
 import logoImg from '../assets/images/logo.png';
+import { CLERGY_DATA, Priest } from '../constants/priests';
 
 export default function HistoryView() {
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [loadingGallery, setLoadingGallery] = useState(true);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedPriest, setSelectedPriest] = useState<Priest | null>(null);
+
+  useEffect(() => {
+    fetch('/api/gallery')
+      .then(res => res.json())
+      .then(data => {
+        setGalleryImages(data);
+        setLoadingGallery(false);
+      })
+      .catch(err => {
+        console.error('Failed to fetch gallery:', err);
+        setLoadingGallery(false);
+      });
+  }, []);
+
+  const handleNext = useCallback(() => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((prev) => (prev !== null && prev < galleryImages.length - 1 ? prev + 1 : 0));
+  }, [selectedIndex, galleryImages.length]);
+
+  const handlePrev = useCallback(() => {
+    if (selectedIndex === null) return;
+    setSelectedIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : galleryImages.length - 1));
+  }, [selectedIndex, galleryImages.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedIndex === null) return;
+      if (e.key === 'Escape') setSelectedIndex(null);
+      if (e.key === 'ArrowRight') handleNext();
+      if (e.key === 'ArrowLeft') handlePrev();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedIndex, handleNext, handlePrev]);
+
   const milestones = [
     { year: '١٩٠٨', title: 'البذور الأولى', desc: 'تأسيس جمعية أصدقاء الكتاب المقدس التي كانت صاحبة الفضل في التفكير في إنشاء الكنيسة.' },
     { year: '١٩٥٠', title: 'شراء الأرض', desc: 'شراء قطعة الأرض الحالية بمساحة ١٥٠٠ متر مربع بحدائق شبرا.' },
@@ -13,39 +54,7 @@ export default function HistoryView() {
     { year: '٢٠١٤', title: 'مقر أسقفية شبرا', desc: 'اختيار الكنيسة لتكون مقراً لنيافة الحبر الجليل الأنبا أنجيلوس أسقف عام كنائس شبرا الشمالية.' },
   ];
 
-  const fathers = [
-    { 
-      name: 'القمص مرقس داود', 
-      role: 'صديق الكتاب المقدس', 
-      desc: 'العالم والمترجم القدير الذي وضع أسس التعليم والترجمة في الكنيسة.',
-      image: '/src/assets/images/fr_markos_dawoud.jpg'
-    },
-    { 
-      name: 'القمص ميخائيل إبراهيم', 
-      role: 'سفير السماء والقديس المعاصر', 
-      desc: 'أب الاعتراف والقديس الذي عاش بالروح والاتضاع، ومزاره الآن بالكاتدرائية المرقسية.',
-      image: '/src/assets/images/fr_mikhail_ibrahim.jpg'
-    },
-    { 
-      name: 'القمص يوحنا جرجس', 
-      role: 'المعلم والأب', 
-      desc: 'رجل الوعظ والتعليم وصاحب الصوت الرخيم الذي تتلمذت على يديه أجيال.',
-      image: '/src/assets/images/fr_yuhanna_guirguis.jpg'
-    },
-    { 
-      name: 'القمص إسطفانوس عازر', 
-      role: 'رجل النشاط والتدبير', 
-      desc: 'شعلة الخدمة الذي اهتم بالتعمير المعماري والروحي ومباني الخدمات.',
-      image: '/src/assets/images/fr_stephanos_azar.jpg'
-    },
-  ];
-
-  const galleryItems = [
-    { year: '١٩٥٣', title: 'لحظة وضع حجر الأساس', image: '/src/assets/images/foundation_stone.jpg' },
-    { year: '١٩٦٠', title: 'أثناء البناء الخرساني', image: '/src/assets/images/construction.jpg' },
-    { year: '١٩٨٨', title: 'رسامة شمامسة', image: '/src/assets/images/ordination.jpg' },
-    { year: '٢٠١٦', title: 'زيارة قداسة البابا', image: '/src/assets/images/pope_visit.jpg' },
-  ];
+  const mainFathers = CLERGY_DATA.slice(0, 4);
 
   return (
     <div className="max-w-5xl mx-auto space-y-20 pb-24 lg:pb-0">
@@ -65,31 +74,50 @@ export default function HistoryView() {
         </p>
       </motion.div>
 
-      {/* Intro & History Grid */}
-      <section className="grid lg:grid-cols-2 gap-16 items-start">
+      {/* Intro & History Centered */}
+      <section className="space-y-12 max-w-4xl mx-auto text-center">
         <div className="space-y-8">
-          <div className="inline-flex p-3 bg-gold text-white rounded-2xl shadow-lg shadow-gold/20" id="intro-icon">
-            <BookOpen className="w-8 h-8" />
+          <div className="inline-flex p-4 bg-gold text-white rounded-3xl shadow-xl shadow-gold/20 mx-auto" id="intro-icon">
+            <BookOpen className="w-10 h-10" />
           </div>
-          <h2 className="arabic-serif text-xl lg:text-4xl font-bold text-stone-800">نشأة الكنيسة</h2>
-          <div className="space-y-6 arabic-sans text-stone-600 leading-relaxed text-sm lg:text-base italic">
-            <p className="relative pl-6 leading-relaxed">
-              "إن يوم ٢٤ مايو ١٩٥٣ كان يوماً تاريخياً، لأنه اليوم الذي بدأت فيه أول نبتة لهذه الكنيسة..."
-            </p>
-            <ul className="space-y-4 not-italic list-disc list-inside text-stone-700">
-              <li>تأسست الكنيسة بجهود جمعية أصدقاء الكتاب المقدس (تأسست ١٩٠٨).</li>
-              <li>تميزت منذ بدايتها بمبدأ "مجانية الخدمة" ووضع الصناديق بدلاً من الأطباق.</li>
-              <li>زارها وباركها بابوات الكنيسة (البابا كيرلس السادس، البابا شنودة الثالث، والبابا تواضروس الثاني).</li>
-            </ul>
+          <h2 className="arabic-serif text-3xl lg:text-5xl font-bold text-stone-800">نشأة الكنيسة</h2>
+          
+          <div className="relative py-10 px-8 lg:px-16 bg-stone-50 rounded-[3rem] border border-stone-100 shadow-inner overflow-hidden group">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-gold/5 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+            
+            <div className="relative space-y-8">
+              <p className="arabic-sans text-stone-600 text-lg lg:text-2xl leading-relaxed italic font-medium">
+                "إن يوم ٢٤ مايو ١٩٥٣ كان يوماً تاريخياً، لأنه اليوم الذي بدأت فيه أول نبتة لهذه الكنيسة..."
+              </p>
+              
+              <div className="h-px w-24 bg-gold/30 mx-auto" />
+              
+              <ul className="space-y-6 arabic-sans text-stone-700 text-base lg:text-lg max-w-2xl mx-auto">
+                <li className="flex items-start gap-3 justify-center text-right group">
+                  <div className="w-2 h-2 bg-gold rounded-full mt-2.5 shrink-0 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <p>تأسست الكنيسة بجهود جمعية أصدقاء الكتاب المقدس (تأسست ١٩٠٨).</p>
+                </li>
+                <li className="flex items-start gap-3 justify-center text-right group">
+                  <div className="w-2 h-2 bg-gold rounded-full mt-2.5 shrink-0 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <p>تميزت منذ بدايتها بمبدأ "مجانية الخدمة" ووضع الصناديق بدلاً من الأطباق.</p>
+                </li>
+                <li className="flex items-start gap-3 justify-center text-right group">
+                  <div className="w-2 h-2 bg-gold rounded-full mt-2.5 shrink-0 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <p>زارها وباركها بابوات الكنيسة (البابا كيرلس السادس، البابا شنودة الثالث، والبابا تواضروس الثاني).</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gold/10 rounded-[2rem] rotate-3 group-hover:rotate-0 transition-all duration-500 opacity-20" />
-          <div className="relative aspect-video lg:aspect-square bg-stone-100 rounded-[2rem] overflow-hidden border-8 border-white shadow-2xl" id="history-image-container">
+
+        <div className="relative group max-w-3xl mx-auto">
+          <div className="absolute inset-0 bg-gold/10 rounded-[2.5rem] rotate-2 group-hover:rotate-0 transition-all duration-500 opacity-20" />
+          <div className="relative aspect-video bg-stone-100 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-2xl" id="history-image-container">
             <img 
               src={heroImg} 
               alt="تاريخ الكنيسة" 
-              className="w-full h-full object-cover transition-all group-hover:scale-110 duration-700"
+              className="w-full h-full object-cover transition-all group-hover:scale-105 duration-700"
             />
           </div>
         </div>
@@ -137,80 +165,181 @@ export default function HistoryView() {
           <p className="arabic-sans text-stone-500 max-w-2xl mx-auto">قامات روحية تركت بصمة لا تُمحى في تاريخ الكنيسة وشعبها.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {fathers.map((father) => (
+          {mainFathers.map((father) => (
             <motion.div 
               key={father.name}
               whileHover={{ y: -10 }}
-              className="custom-panel !p-6 !mb-0 text-center space-y-4 transition-all"
+              onClick={() => setSelectedPriest(father)}
+              className="custom-panel !p-6 !mb-0 text-center space-y-4 transition-all cursor-pointer group"
             >
-              <div className="relative w-32 h-32 mx-auto rounded-2xl overflow-hidden shadow-md border-4 border-white">
+              <div className="relative w-32 h-32 mx-auto rounded-2xl overflow-hidden shadow-md border-4 border-white bg-white flex items-center justify-center">
                 <img 
                   src={father.image}
                   alt={father.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = `https://ui-avatars.com/api/?name=${encodeURIComponent(father.name.split(' ').pop() || '')}&background=fef3c7&color=b45309&size=128&font-size=0.33`;
-                  }}
+                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
                 />
               </div>
               <h3 className="arabic-serif text-xl font-bold text-stone-800">{father.name}</h3>
               <div className="text-gold font-bold arabic-sans text-[10px] uppercase tracking-widest bg-gold/5 px-3 py-1 rounded-full inline-block">
-                {father.role}
+                {father.title}
               </div>
-              <p className="arabic-sans text-stone-500 text-xs leading-relaxed">{father.desc}</p>
+              <p className="arabic-sans text-stone-500 text-xs leading-relaxed line-clamp-2">
+                {father.summary?.[0] || 'سيرة عطرة ومسيرة حافلة بالعطاء في تاريخ الكنيسة.'}
+              </p>
             </motion.div>
           ))}
         </div>
       </section>
 
+      {/* Priest Detail Modal */}
+      <AnimatePresence>
+        {selectedPriest && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-md bg-stone-900/60"
+            onClick={() => setSelectedPriest(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="bg-white rounded-[3rem] shadow-2xl max-w-2xl w-full overflow-hidden relative max-h-[90vh] flex flex-col text-right"
+              dir="rtl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                onClick={() => setSelectedPriest(null)}
+                className="absolute top-6 left-6 p-2 bg-stone-100 hover:bg-stone-200 text-stone-500 rounded-full transition-colors z-10"
+              >
+                <X className="w-6 h-6" />
+              </button>
+
+              <div className="flex-1 overflow-y-auto custom-scrollbar">
+                {/* Header with Image */}
+                <div className="bg-stone-50 p-8 pt-12 flex flex-col items-center text-center space-y-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 blur-2xl rounded-full -mr-16 -mt-16" />
+                  
+                  {selectedPriest.image && (
+                    <div className="w-48 h-48 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-xl relative z-10 bg-white">
+                      <img 
+                        src={selectedPriest.image} 
+                        alt={selectedPriest.name} 
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  )}
+
+                  <div className="space-y-2 relative z-10">
+                    <h2 className="arabic-serif text-3xl font-bold text-stone-900">{selectedPriest.name}</h2>
+                    {selectedPriest.title && (
+                      <div className="flex items-center justify-center gap-2 text-gold">
+                        <Star className="w-4 h-4 fill-gold" />
+                        <span className="arabic-serif text-xl font-medium">{selectedPriest.title}</span>
+                        <Star className="w-4 h-4 fill-gold" />
+                      </div>
+                    )}
+                    <div className="flex items-center justify-center gap-3">
+                      <span className="px-3 py-1 bg-gold/10 text-gold text-xs rounded-full arabic-sans font-bold">
+                        {selectedPriest.status === 'تنيح' ? 'تنيح بسلام' : selectedPriest.status === 'حالي' ? 'خدمة حالية' : 'خدمة سابقة'}
+                      </span>
+                      <span className="w-1.5 h-1.5 bg-stone-300 rounded-full" />
+                      <span className="arabic-sans text-stone-400 text-sm">مدرسة الآباء القديسين</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-8 lg:p-12 space-y-10">
+                  {/* Summary Points or Placeholder */}
+                  <div className="space-y-6">
+                    <div className="flex items-center gap-3 text-gold mb-8">
+                       <BookOpen className="w-6 h-6" />
+                       <h4 className="arabic-serif text-xl font-bold">لمحات من حياته المباركة</h4>
+                    </div>
+                    
+                    {selectedPriest.summary ? (
+                      <ul className="space-y-6">
+                        {selectedPriest.summary.map((point: string, idx: number) => (
+                          <motion.li 
+                            key={idx}
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 * idx }}
+                            className="flex gap-4 group"
+                          >
+                            <div className="mt-2 w-2 h-2 bg-gold rounded-full shrink-0 group-hover:scale-150 transition-transform duration-300 shadow-[0_0_8px_rgba(180,115,31,0.4)]" />
+                            <p className="arabic-sans text-stone-600 leading-relaxed text-lg text-right w-full">
+                              {point}
+                            </p>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <div className="py-12 text-center text-stone-400 bg-stone-50 rounded-3xl border-2 border-dashed border-stone-100">
+                        <BookOpen className="w-12 h-12 mx-auto mb-4 opacity-20" />
+                        <p className="arabic-sans">جاري العمل على توثيق السيرة الكاملة...</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Dates Footer */}
+                  <div className="grid grid-cols-2 gap-4 py-8 border-t border-stone-100">
+                    <div className="p-4 bg-stone-50 rounded-2xl space-y-1">
+                      <p className="arabic-sans text-xs text-stone-400 uppercase tracking-wider">تاريخ السيامة</p>
+                      <p className="arabic-serif text-lg font-bold text-stone-900">{selectedPriest.ordination}</p>
+                    </div>
+                    <div className="p-4 bg-gold/5 rounded-2xl space-y-1">
+                      <p className="arabic-sans text-xs text-stone-400 uppercase tracking-wider">تاريخ القمصية</p>
+                      <p className="arabic-serif text-lg font-bold text-gold">{selectedPriest.promotion}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-center italic">
+                    <Quote className="w-8 h-8 text-stone-100 absolute -bottom-4 right-8 transform -scale-x-100" />
+                    <p className="arabic-serif text-stone-400 text-lg">"بَرَكَةُ الصِّدِّيقِ عَلَى الرَّأْسِ"</p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Treasures & Relics */}
       <section className="bg-gold rounded-[3rem] p-12 lg:p-16 text-white overflow-hidden relative shadow-2xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-30" />
-        <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <div className="inline-flex p-3 bg-white/20 rounded-2xl border border-white/20">
-              <ShieldCheck className="w-8 h-8" />
+        <div className="relative z-10 max-w-3xl mx-auto text-center">
+          <div className="space-y-8">
+            <div className="inline-flex p-4 bg-white/20 rounded-3xl border border-white/20 mx-auto">
+              <ShieldCheck className="w-10 h-10" />
             </div>
-            <h2 className="arabic-serif text-3xl lg:text-4xl font-bold leading-tight">ذخائر الكنيسة المقدسة</h2>
-            <p className="arabic-sans text-white/80 text-lg">
+            <h2 className="arabic-serif text-3xl lg:text-5xl font-bold leading-tight">ذخائر الكنيسة المقدسة</h2>
+            <p className="arabic-sans text-white/90 text-xl max-w-2xl mx-auto">
               تحتوي الكنيسة على ذخائر ثمينة تبارك كل من يطأ هذه العتبات المقدسة:
             </p>
-            <ul className="space-y-4 arabic-sans text-white">
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                جزء من رفات القديس "مار مرقس الرسول" شفيع الكنيسة.
+            
+            <div className="h-px w-24 bg-white/30 mx-auto" />
+
+            <ul className="space-y-6 arabic-sans text-white text-lg lg:text-xl">
+              <li className="flex items-center gap-4 justify-center">
+                <div className="w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_12px_rgba(255,255,255,1)] shrink-0" />
+                <p>جزء من رفات القديس "مار مرقس الرسول" شفيع الكنيسة.</p>
               </li>
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                رفات كوكبة من الشهداء والقديسين (أكثر من مئة قديس).
+              <li className="flex items-center gap-4 justify-center">
+                <div className="w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_12px_rgba(255,255,255,1)] shrink-0" />
+                <p>رفات كوكبة من الشهداء والقديسين (أكثر من مئة قديس).</p>
               </li>
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                قطعة غالية من خشبة صليب السيد المسيح وشوكة من إكليل الشوك.
+              <li className="flex items-center gap-4 justify-center">
+                <div className="w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_12px_rgba(255,255,255,1)] shrink-0" />
+                <p>قطعة غالية من خشبة صليب السيد المسيح وشوكة من إكليل الشوك.</p>
               </li>
-              <li className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
-                بقع من دم المسيح ظهرت على تونية الشماس يوسف إسكندر (١٩٦٣).
+              <li className="flex items-center gap-4 justify-center">
+                <div className="w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_12px_rgba(255,255,255,1)] shrink-0" />
+                <p>بقع من دم المسيح ظهرت على تونية الشماس يوسف إسكندر (١٩٦٣).</p>
               </li>
             </ul>
-          </div>
-          <div className="relative">
-            <div className="absolute inset-0 bg-stone-100 rounded-3xl -rotate-6 scale-95" />
-            <div className="relative aspect-square bg-stone-50 rounded-3xl border-8 border-stone-100 flex items-center justify-center p-8 shadow-inner overflow-hidden">
-              <img 
-                src={logoImg} 
-                alt="St. Mark Icon" 
-                className="w-full h-full object-contain opacity-20 contrast-125"
-              />
-              <div className="absolute inset-0 grid grid-cols-2 gap-4 p-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="aspect-square bg-white/40 backdrop-blur-sm rounded-2xl border border-white/50 flex flex-col items-center justify-center italic text-amber-900 arabic-sans text-[10px] text-center p-2">
-                    <Star className="w-3 h-3 mb-1 text-amber-600" />
-                    مقتنيات مقدسة {i}
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -225,38 +354,131 @@ export default function HistoryView() {
             </h2>
             <p className="arabic-sans text-stone-500">مشاهد تاريخية من حياة الكنيسة وخدمتها عبر السنين.</p>
           </div>
-          <button className="px-8 py-3 bg-stone-900 text-white rounded-full arabic-sans font-bold hover:bg-gold transition-colors shadow-lg">
-            عرض كل الصور
-          </button>
         </div>
         
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {galleryItems.map((item, i) => (
-            <motion.div 
-              key={i}
-              whileHover={{ scale: 1.02 }}
-              className="group relative aspect-[3/4] bg-stone-200 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg"
+        {loadingGallery ? (
+          <div className="flex flex-col items-center justify-center py-20 grayscale opacity-50">
+            <Loader2 className="w-12 h-12 text-gold animate-spin mb-4" />
+            <p className="arabic-sans text-stone-500">جاري تحميل الذكريات...</p>
+          </div>
+        ) : galleryImages.length > 0 ? (
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {galleryImages.map((img, i) => (
+              <motion.div 
+                key={img}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                onClick={() => setSelectedIndex(i)}
+                className="group relative aspect-square bg-stone-100 rounded-[2rem] overflow-hidden cursor-pointer shadow-lg border-4 border-white"
+              >
+                <div className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover:opacity-100 transition-opacity z-10 flex items-center justify-center">
+                   <div className="p-3 bg-white/20 backdrop-blur-md rounded-full border border-white/30 text-white">
+                      <Star className="w-6 h-6 fill-white" />
+                   </div>
+                </div>
+                <div className="absolute inset-0 flex items-center justify-center p-4">
+                   <img 
+                      src={`/gallery/${img}`}
+                      alt="ذكريات الكنيسة"
+                      className="w-full h-full object-contain grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-105"
+                      referrerPolicy="no-referrer"
+                    />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="bg-stone-50 rounded-[2rem] p-12 text-center border-2 border-dashed border-stone-200">
+             <div className="w-16 h-16 bg-stone-100 rounded-2xl flex items-center justify-center mx-auto mb-4 text-stone-300">
+                <ImageIcon className="w-8 h-8" />
+             </div>
+             <p className="arabic-sans text-stone-400">لا توجد صور في ألبوم الذكريات حالياً.</p>
+             <p className="text-xs text-stone-300 mt-2">قم بإضافة صور إلى مجلد public/gallery ليتم عرضها هنا.</p>
+          </div>
+        )}
+      </section>
+
+      {/* Gallery Lightbox */}
+      <AnimatePresence>
+        {selectedIndex !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] bg-stone-950/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-10"
+            onClick={() => setSelectedIndex(null)}
+          >
+            <motion.button
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="absolute top-6 right-6 z-10 w-12 h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors border border-white/10"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedIndex(null);
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                 <img 
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0 group-hover:scale-110"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${i + 45}/600/800?sepia=1`;
-                    }}
-                  />
+              <X className="w-6 h-6" />
+            </motion.button>
+
+            <button
+              className="absolute left-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors border border-white/10 lg:flex hidden"
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePrev();
+              }}
+            >
+              <ChevronLeft className="w-8 h-8" />
+            </button>
+
+            <button
+              className="absolute right-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors border border-white/10 lg:flex hidden"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNext();
+              }}
+            >
+              <ChevronRight className="w-8 h-8" />
+            </button>
+
+            <motion.div
+              layoutId={`gallery-${galleryImages[selectedIndex]}`}
+              className="relative max-w-5xl w-full h-full flex flex-col items-center justify-center gap-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative w-full h-[70vh] flex items-center justify-center">
+                <img
+                  src={`/gallery/${galleryImages[selectedIndex]}`}
+                  alt="Gallery Zoom"
+                  className="max-w-full max-h-full object-contain shadow-2xl rounded-2xl"
+                />
               </div>
-              <div className="absolute bottom-6 left-6 right-6 z-20 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all">
-                <div className="arabic-sans text-amber-400 font-bold text-xs mb-1">{item.year}</div>
-                <div className="arabic-serif text-white text-lg font-bold">{item.title}</div>
+              
+              <div className="flex items-center gap-6">
+                <button
+                  className="w-12 h-12 bg-white/5 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-colors lg:hidden"
+                  onClick={handlePrev}
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                
+                <div className="px-6 py-2 bg-white/10 rounded-full border border-white/10 text-white arabic-sans text-sm font-medium">
+                   {selectedIndex + 1} / {galleryImages.length}
+                </div>
+
+                <button
+                  className="w-12 h-12 bg-white/5 hover:bg-white/10 text-white rounded-full flex items-center justify-center transition-colors lg:hidden"
+                  onClick={handleNext}
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
               </div>
             </motion.div>
-          ))}
-        </div>
-      </section>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quick Stats Summary */}
       <section className="custom-panel !p-12 text-center space-y-8 !bg-stone-50/50">

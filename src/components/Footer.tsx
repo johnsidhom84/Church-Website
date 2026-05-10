@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail, ChevronLeft, Facebook, Youtube, Instagram } from 'lucide-react';
+import { MapPin, Phone, Mail, ChevronLeft, Facebook, Youtube, Instagram, History, UserCheck, Users, Image as ImageIcon } from 'lucide-react';
 import logoImg from '../assets/images/logo.png';
 
 interface FooterProps {
@@ -36,6 +36,32 @@ export default function Footer({ onTabChange }: FooterProps) {
   return (
     <footer className="footer bg-stone-900 text-stone-300 pt-16 pb-32 lg:pb-12 mt-20 border-t-3 border-gold" dir="rtl">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Quick Icon Navigation for "About Church" */}
+        <div className="bg-stone-800/50 rounded-3xl p-6 mb-16 border border-white/5">
+          <div className="flex flex-wrap justify-around gap-6">
+            {[
+              { id: 'history', label: 'تاريخ الكنيسة', icon: History },
+              { id: 'saint', label: 'شفيعنا القديس', icon: UserCheck },
+              { id: 'clergy', label: 'الآباء الكهنة', icon: Users },
+              { id: 'gallery', label: 'معرض الصور', icon: ImageIcon },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  onTabChange(item.id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="flex flex-col items-center gap-3 group"
+              >
+                <div className="w-14 h-14 bg-stone-700/50 rounded-2xl flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white transition-all transform group-hover:-translate-y-1">
+                  <item.icon className="w-7 h-7" />
+                </div>
+                <span className="arabic-serif text-sm font-medium text-stone-300 group-hover:text-gold transition-colors">{item.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand section */}
           <div className="space-y-6">
@@ -50,7 +76,7 @@ export default function Footer({ onTabChange }: FooterProps) {
               <span className="arabic-serif font-bold text-2xl text-white">كنيسة مارمرقس بشبرا</span>
             </div>
             <p className="arabic-sans text-sm leading-relaxed opacity-70">
-              بيت الله المفتوع للجميع.. منارة روحية في قلب شبرا العريق، تخدم النفوس بروح المحبة والتواضع وتقدم الأسرار المقدسة والتعليم المستقيم.
+              بيت الله المفتوح للجميع.. منارة روحية في قلب شبرا العريق، تخدم النفوس بروح المحبة والتواضع وتقدم الأسرار المقدسة والتعليم المستقيم.
             </p>
             <div className="flex gap-4">
               <a href="#" className="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-gold transition-colors text-white">

@@ -1,4 +1,4 @@
-import { Calendar, Home, Book, Megaphone, LayoutGrid } from 'lucide-react';
+import { Calendar, Home, Book, Megaphone, LayoutGrid, History, UserCheck, Users, Image as ImageIcon } from 'lucide-react';
 import logoImg from '../assets/images/logo.png';
 
 interface NavbarProps {
@@ -7,13 +7,22 @@ interface NavbarProps {
 }
 
 export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
-  const tabs = [
+  const mainTabs = [
     { id: 'home', label: 'الرئيسية', icon: Home },
+    { id: 'history', label: 'تاريخ الكنيسة', icon: History },
+    { id: 'saint', label: 'شفيعنا القديس', icon: UserCheck },
+    { id: 'clergy', label: 'الآباء الكهنة', icon: Users },
+    { id: 'gallery', label: 'معرض الصور', icon: ImageIcon },
+  ];
+
+  const secondaryTabs = [
     { id: 'readings', label: 'القراءات', icon: Book },
-    { id: 'services', label: 'خدمات الكنيسة', icon: LayoutGrid },
+    { id: 'services', label: 'الخدمات', icon: LayoutGrid },
     { id: 'announcements', label: 'الإعلانات', icon: Megaphone },
     { id: 'events', label: 'المواعيد', icon: Calendar },
   ];
+
+  const allTabs = [...mainTabs, ...secondaryTabs];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 lg:top-0 lg:bottom-auto bg-white/95 backdrop-blur-md border-t lg:border-t-0 lg:border-b-2 border-gold/20 lg:border-gold z-50">
@@ -28,8 +37,8 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
           </div>
         </div>
 
-        <div className="flex justify-between items-center h-16 lg:h-20">
-          <div className="hidden lg:flex items-center gap-3">
+        <div className="flex justify-between items-center h-16 lg:h-20 lg:overflow-visible">
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <div className="p-1 bg-white rounded-xl shadow-sm border border-gold/10">
               <img 
                 src={logoImg} 
@@ -40,29 +49,34 @@ export default function Navbar({ activeTab, setActiveTab }: NavbarProps) {
             <span className="arabic-serif font-bold text-xl text-stone-800">كنيسة مارمرقس بشبرا</span>
           </div>
           
-          <div className="flex flex-1 justify-around lg:justify-end lg:gap-6 max-w-lg lg:max-w-none">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex flex-col lg:flex-row items-center gap-1 lg:gap-2 px-4 py-2 rounded-xl transition-all ${
-                    isActive 
-                      ? 'text-gold lg:bg-gold/10 font-bold' 
-                      : 'text-stone-500 hover:text-stone-800'
-                  }`}
-                >
-                  <Icon className={`w-6 h-6 ${isActive ? 'scale-110' : ''} transition-transform`} />
-                  <span className="text-xs lg:text-base arabic-sans">{tab.label}</span>
-                  {isActive && (
-                    <div className="lg:hidden w-1.5 h-1.5 bg-gold rounded-full mt-1" />
-                  )}
-                </button>
-              );
-            })}
+          <div className="flex flex-1 overflow-x-auto no-scrollbar lg:overflow-visible lg:justify-end lg:gap-2 px-2">
+            <div className="flex items-center min-w-max lg:min-w-0 lg:gap-1">
+              {allTabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveTab(tab.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-2 px-3 lg:px-4 py-2 rounded-xl transition-all min-w-[72px] lg:min-w-0 ${
+                      isActive 
+                        ? 'text-gold lg:bg-gold/10 font-bold' 
+                        : 'text-stone-500 hover:text-stone-800'
+                    }`}
+                  >
+                    <Icon className={`w-5 h-5 lg:w-6 lg:h-6 ${isActive ? 'scale-110' : ''} transition-transform`} />
+                    <span className="text-[10px] lg:text-sm arabic-sans whitespace-nowrap">{tab.label}</span>
+                    {isActive && (
+                      <div className="lg:hidden w-1 h-1 bg-gold rounded-full mt-0.5" />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

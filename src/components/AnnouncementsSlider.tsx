@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
 const FALLBACK_IMAGES = [
-  '/src/assets/images/Announcement 1.jpg',
-  '/src/assets/images/Announcement 2.jpg',
-  '/src/assets/images/Announcement 3.jpg'
+  '/assets/images/Announcement 1.jpg',
+  '/assets/images/Announcement 2.jpg',
+  '/assets/images/Announcement 3.jpg'
 ];
 
 export const AnnouncementsSlider: React.FC = () => {
@@ -38,13 +38,17 @@ export const AnnouncementsSlider: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="w-full h-full p-4 flex items-center justify-center bg-white"
+              className="w-full h-full flex items-center justify-center bg-white"
             >
               <img 
                 src={FALLBACK_IMAGES[currentIndex]} 
                 alt={`Announcement ${currentIndex + 1}`} 
-                className="max-h-full w-auto rounded-xl object-contain shadow-sm"
-                loading="lazy"
+                className="w-full h-full object-contain rounded-xl"
+                onError={(e) => {
+                  console.error('Image failed to load:', FALLBACK_IMAGES[currentIndex]);
+                  // You can set a fallback placeholder here if needed
+                  (e.target as HTMLImageElement).src = 'https://placehold.co/600x800?text=Announcement';
+                }}
               />
             </motion.div>
           </AnimatePresence>
