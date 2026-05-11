@@ -1,57 +1,80 @@
 import { motion } from 'motion/react';
 import React from 'react';
 import { 
+  Users, 
+  GraduationCap, 
+  BookOpen, 
+  Music, 
+  Heart, 
   Clock, 
   CheckCircle2, 
   Phone, 
   MessageSquare,
-  Activity,
-  Baby,
-  Stethoscope,
-  Trees
+  Cross,
+  Activity
 } from 'lucide-react';
 
 export default function ChurchServicesView() {
   const services = [
     {
+      id: 'sunday-school',
+      icon: GraduationCap,
+      title: 'مدارس الأحد',
+      subtitle: 'بناء الأجيال',
+      desc: 'فصول مخصصة لكل مرحلة عمرية لغرس قيم المحبة والإيمان.',
+      schedule: 'كل جمعة: ١٠:٠٠ ص - ١٢:٠٠ ظ',
+      color: 'bg-blue-50 text-blue-700',
+      tag: 'أطفال وشباب'
+    },
+    {
+      id: 'bible-study',
+      icon: BookOpen,
+      title: 'درس الكتاب',
+      subtitle: 'تعمق في كلمة الله',
+      desc: 'اجتماع أسبوعي لدراسة الكتاب المقدس وتفسير الآباء والنمو الروحي.',
+      schedule: 'كل ثلاثاء: ٧:٠٠ م - ٨:٣٠ م',
+      color: 'bg-emerald-50 text-emerald-700',
+      tag: 'عام'
+    },
+    {
+      id: 'liturgy',
+      icon: Cross,
+      title: 'القداسات الإلهية',
+      subtitle: 'سر الإفخارستيا',
+      desc: 'مواعيد القداسات الإلهية المنتظمة على مدار الأسبوع.',
+      schedule: 'الأحد: ٧-١٠ ص | الجمعة: ٨-١١ ص',
+      color: 'bg-amber-50 text-amber-700',
+      tag: 'روحيات'
+    },
+    {
+      id: 'choir',
+      icon: Music,
+      title: 'خورس الألحان',
+      subtitle: 'التسبيح الكنسي',
+      desc: 'تعليم الألحان القبطية والطقوس الكنسية لمختلف الأعمار.',
+      schedule: 'كل سبت: ٥:٠٠ م - ٧:٠٠ م',
+      color: 'bg-purple-50 text-purple-700',
+      tag: 'طقوس'
+    },
+    {
+      id: 'youth',
+      icon: Users,
+      title: 'اجتماع الشباب',
+      subtitle: 'حياة الشركة',
+      desc: 'لقاء خاص للشباب لمناقشة قضايا معاصرة بروح مسيحية.',
+      schedule: 'كل خميس: ٧:٣٠ م - ٩:٠٠ م',
+      color: 'bg-rose-50 text-rose-700',
+      tag: 'شباب'
+    },
+    {
       id: 'st-mark-hospital',
       icon: Activity,
       title: 'مستشفى القديس مرقس',
       subtitle: 'رعاية طبية متميزة',
-      desc: 'مركز طبي متكامل يقدم خدمات صحية لجميع فئات المجتمع بأسعار مُخفّضة وبأحدث الأجهزة الطبية.',
+      desc: 'مركز طبي متكامل يقدم خدمات صحية لجميع فئات المجتمع بأسعار مُخفّضة وبأحدث الأجهزة.',
       schedule: 'تعمل على مدار ٢٤ ساعة',
       color: 'bg-red-50 text-red-700',
       tag: 'طبي'
-    },
-    {
-      id: 'kindergarten',
-      icon: Baby,
-      title: 'حضانة كنيسة مارمرقس',
-      subtitle: 'تربية وتعليم',
-      desc: 'بيئة تعليمية آمنة ومرحة لتطوير مهارات الأطفال واكتشاف مواهبهم في سن مبكرة.',
-      schedule: 'الأحد - الخميس: ٨:٠٠ ص - ٣:٠٠ م',
-      color: 'bg-blue-50 text-blue-700',
-      tag: 'تعليم'
-    },
-    {
-      id: 'dialysis-center',
-      icon: Stethoscope,
-      title: 'مركز الغسيل الكلوي',
-      subtitle: 'خدمة تخصصية',
-      desc: 'وحدة مجهزة بأحدث ماكينات الغسيل الكلوي لخدمة المرضى تحت إشراف نخبة من الأطباء.',
-      schedule: 'يومياً حسب المواعيد المسجلة',
-      color: 'bg-emerald-50 text-emerald-700',
-      tag: 'طبي تخصصي'
-    },
-    {
-      id: 'villa-oraby',
-      icon: Trees,
-      title: 'فيلا عرابي',
-      subtitle: 'مؤتمرات ورحلات',
-      desc: 'بيت للمؤتمرات والرحلات مجهز بالكامل لاستقبال المجموعات والخدمات الكنسية لقضاء أوقات روحية.',
-      schedule: 'متاحة للحجز المسبق',
-      color: 'bg-amber-50 text-amber-700',
-      tag: 'خدمات خارجية'
     }
   ];
 
@@ -62,14 +85,14 @@ export default function ChurchServicesView() {
         <div className="inline-flex items-center gap-2 px-4 py-1 bg-stone-100 text-stone-700 rounded-full text-xs font-bold arabic-sans uppercase tracking-widest">
           خدمتكم شرف لنا
         </div>
-        <h1 className="arabic-serif text-xl lg:text-5xl font-bold text-stone-900 leading-tight">خدماتنا المجتمعية</h1>
+        <h1 className="arabic-serif text-xl lg:text-5xl font-bold text-stone-900 leading-tight">خدمات الكنيسة</h1>
         <p className="arabic-sans text-stone-500 max-w-2xl mx-auto text-sm lg:text-lg leading-relaxed">
-          تفتخر الكنيسة بتقديم مجموعة من الخدمات الطبية والتعليمية والترفيهية التي تهدف لخدمة الجميع بروح المحبة والعطاء.
+          نقدم مجموعة متنوعة من الأنشطة والخدمات الروحية والتعليمية التي تهدف إلى خدمة كل أفراد الأسرة المسيحية، من الأطفال وحتى كبار السن.
         </p>
       </div>
 
       {/* Services Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8 text-right" dir="rtl">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 text-right" dir="rtl">
         {services.map((service, i) => (
           <motion.div
             key={service.id}
@@ -104,7 +127,7 @@ export default function ChurchServicesView() {
         ))}
       </div>
 
-      {/* Featured Kindergarten Section */}
+      {/* Featured Sunday School Section (Expanded from original) */}
       <section className="bg-stone-900 rounded-[3rem] p-8 lg:p-16 text-white overflow-hidden relative shadow-2xl">
         <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         
@@ -112,19 +135,19 @@ export default function ChurchServicesView() {
           <div className="space-y-8 order-2 lg:order-1 text-right" dir="rtl">
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/20 text-gold rounded-full text-[10px] font-bold arabic-sans">
-                التربية والتعليم
+                قسم التربية الكنسية
               </div>
-              <h2 className="arabic-serif text-2xl lg:text-5xl font-bold">حضانة مارمرقس النموذجية</h2>
+              <h2 className="arabic-serif text-2xl lg:text-5xl font-bold">رعاية النشء والشباب</h2>
               <p className="arabic-sans text-stone-400 leading-relaxed text-lg">
-                نضع حجر الأساس لمستقبل أطفالكم من خلال برنامج تعليمي متكامل يعتمد على اللعب والابتكار في بيئة مسيحية آمنة.
+                مدارس الأحد هي قلب الكنيسة النابض. نسعى لتهيئة بيئة مسيحية آمنة ومحفزة تضمن نمو أطفالكم روحياً وعقلياً.
               </p>
             </div>
 
             <div className="space-y-4">
               {[
-                'إشراف تربوي وطبي متخصص للأطفال.',
-                'تنمية المهارات اللغوية والذهنية والجسدية.',
-                'بيئة آمنة مجهزة بأحدث وسائل الترفيه والتعليم.',
+                'مناهج كنسية مطورة تناسب احتياجات الأجيال الحالية.',
+                'خدام وخادمات متخصصون ومدربون على أساليب التربية الحديثة.',
+                'أنشطة ترفيهية، رحلات، وكورالات ترتيل منتظمة.',
               ].map((text, i) => (
                 <div key={i} className="flex gap-4 items-start bg-white/5 p-4 rounded-2xl border border-white/10">
                   <CheckCircle2 className="w-5 h-5 text-gold mt-1 shrink-0" />
@@ -139,7 +162,7 @@ export default function ChurchServicesView() {
                   <Phone className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="text-[10px] text-stone-500 arabic-sans">رقم مكتب الحضانة</div>
+                  <div className="text-[10px] text-stone-500 arabic-sans">رقم مكتب الخدمة</div>
                   <div className="text-lg font-bold arabic-sans">0224316533</div>
                 </div>
               </div>
@@ -150,13 +173,13 @@ export default function ChurchServicesView() {
             <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/3] lg:aspect-square">
               <img 
                 src="https://images.unsplash.com/photo-1544365391-8299b70ad008?q=80&w=1000" 
-                alt="Kindergarten" 
+                alt="Sunday School" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-stone-900/80 to-transparent" />
               <div className="absolute bottom-8 right-8 left-8 text-right">
-                <p className="arabic-serif text-xl lg:text-2xl font-bold italic">"دَعُوا الأَوْلاَدَ يَأْتُونَ إِلَيَّ وَلاَ تَمْنَعُوهُمْ"</p>
+                <p className="arabic-serif text-xl lg:text-2xl font-bold italic">"رَبِّ الوَلَدَ فِي طَرِيقِهِ، فَمَتَى شَاخَ أَيْضًا لاَ يَحِيدُ عَنْهُ."</p>
               </div>
             </div>
           </div>
@@ -168,20 +191,19 @@ export default function ChurchServicesView() {
         <div className="max-w-2xl mx-auto space-y-4">
           <h2 className="arabic-serif text-3xl font-bold text-stone-900">هل لديك استفسار عن خدماتنا؟</h2>
           <p className="arabic-sans text-stone-600">
-            يسعدنا دائماً تواصلكم معنا. نحن هنا لخدمتكم وتقديم الدعم اللازم لكافة الأنشطة والخدمات المجتمعية والطبية.
+            يسعدنا دائماً تواصلكم معنا. نحن هنا لخدمتكم وتقديم الدعم الروحي والإداري اللازم لكافة الأنشطة والخدمات الكنسية.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4">
           <button className="px-10 py-4 bg-stone-900 text-white rounded-2xl font-bold arabic-sans hover:bg-gold transition-colors flex items-center gap-2 shadow-lg">
             <MessageSquare className="w-5 h-5" />
-            <span>تواصل مع مكتب الخدمة</span>
+            <span>تحدث مع أحد الخدام</span>
           </button>
           <button className="px-10 py-4 bg-white text-stone-700 border border-gold/20 rounded-2xl font-bold arabic-sans hover:bg-gold/10 transition-colors shadow-sm">
-            تفاصيل الحجوزات
+            جدول المواعيد الكامل
           </button>
         </div>
       </div>
     </div>
   );
 }
-

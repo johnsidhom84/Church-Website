@@ -1,3 +1,8 @@
+import frMarkosImg from '../assets/images/fr_markos_dawoud.jpg';
+import frEstafanosImg from '../assets/images/fr.estafanos_azer.jpg';
+import frYohanaImg from '../assets/images/fr_yohana_girgis.jpg';
+import frMikhailImg from '../assets/images/fr_mikhail_ibrahim.jpg';
+
 export interface Priest {
   name: string;
   ordination: string;
@@ -16,7 +21,7 @@ export const CLERGY_DATA: Priest[] = [
     promotion: '12 سبتمبر 1975 م.',
     status: 'تنيح',
     note: '',
-    image: '/src/assets/images/fr_markos_dawoud.jpg',
+    image: frMarkosImg,
     title: 'صديق الكتاب المقدس',
     summary: [
       'ولد عام 1897 باسم "حافظ" في إمبابة وتخرج من الكلية الإكليريكية عام 1918 تحت إشراف القديس حبيب جرجس.',
@@ -33,7 +38,7 @@ export const CLERGY_DATA: Priest[] = [
     promotion: '19 فبراير 1988 م.',
     status: 'تنيح',
     note: '',
-    image: '/src/assets/images/fr.estafanos_azer.jpg',
+    image: frEstafanosImg,
     title: 'رجل العمل الرعوي والتدبير',
     summary: [
       'نشأ في الكنيسة كخادم وتتلمذ على يد الآباء الرواد (مرقس وميخائل ويوحنا) وسيم في يوم عيد الشهيد إسطفانوس.',
@@ -50,7 +55,7 @@ export const CLERGY_DATA: Priest[] = [
     promotion: '14 نوفمبر 1975 م.',
     status: 'تنيح',
     note: '',
-    image: '/src/assets/images/fr_yohana_girgis.jpg',
+    image: frYohanaImg,
     title: 'المعلم والأب',
     summary: [
       'ولد عام 1902 وعمل مدرساً ومفتشاً للتعليم، وسيم كاهناً عام 1960 كأول كاهن يرسّم على مذبح الكنيسة الجديدة.',
@@ -67,7 +72,7 @@ export const CLERGY_DATA: Priest[] = [
     promotion: 'مايو 1952 م.',
     status: 'تنيح',
     note: '',
-    image: '/src/assets/images/fr_mikhail_ibrahim.jpg',
+    image: frMikhailImg,
     title: 'سفير من السماء',
     summary: [
       'ولد عام 1899 واشتهر بلقب "سفير من السماء" لشفافيته الروحية العالية وعيشه حياة الإنجيل المعاش.',
