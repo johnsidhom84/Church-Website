@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Calendar, Award, Building2, Users, Star, ShieldCheck, Image as ImageIcon, Loader2, X, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 import React, { useState, useEffect, useCallback } from 'react';
-import heroImg from '../assets/images/hero.jpg';
-import logoImg from '../assets/images/logo.png';
 import { CLERGY_DATA, Priest } from '../constants/priests';
+import { useSEO } from '../hooks/useSEO';
+
+const heroImg = '/images/hero.jpg';
+const logoImg = '/images/logo.png';
 
 const PriestCard: React.FC<{ father: Priest, onSelect: (p: Priest) => void }> = ({ father, onSelect }) => {
   const [hasError, setHasError] = useState(false);
@@ -54,6 +56,12 @@ const PriestCard: React.FC<{ father: Priest, onSelect: (p: Priest) => void }> = 
 };
 
 export default function HistoryView() {
+  useSEO({
+    title: 'تاريخ الكنيسة - كنيسة مارمرقس بشبرا',
+    description: 'تاريخ كنيسة الشهيد العظيم مارمرقس الرسولي بشبرا، من نشأتها بجمعية أصدقاء الكتاب المقدس وحتى اليوم.',
+    keywords: 'تاريخ كنيسة مارمرقس, كنيسة شبرا, الكنيسة القبطية, جمعية أصدقاء الكتاب المقدس, كنائس شبرا',
+  });
+
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [loadingGallery, setLoadingGallery] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);

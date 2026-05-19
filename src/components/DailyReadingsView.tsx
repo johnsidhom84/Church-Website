@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { Book, FileText, Sun, Calendar as CalendarIcon, Quote, RefreshCw, AlertCircle } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 interface Reading {
   title: string;
@@ -22,6 +23,12 @@ interface KatamarsData {
 }
 
 export default function DailyReadingsView() {
+  useSEO({
+    title: 'قراءات اليوم والسنكسار - كنيسة مارمرقس بشبرا',
+    description: 'قراءات اليوم الكنسية، السنكسار، والتأملات الروحية اليومية من كنيسة القديس مارمرقس الرسولي بشبرا.',
+    keywords: 'قراءات اليوم, السنكسار, القطمارس, آية اليوم, التأمل الروحي, الكتاب المقدس',
+  });
+
   const [data, setData] = useState<KatamarsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

@@ -22,11 +22,24 @@ export const LiveStreamWidget: React.FC = () => {
         setData(result);
         setError(false);
       } else {
-        setError(true);
+        // Fallback for static hosting where /api doesn't exist
+        setData({
+          videoId: 'R-2C2-dG-xY',
+          isLive: false,
+          title: 'من أرشيف الكنيسة',
+          status: 'لا يوجد بث مباشر الآن'
+        });
+        setError(false);
       }
     } catch (err) {
-      console.error('Error fetching live stream:', err);
-      setError(true);
+      console.warn('Live stream API not available, using fallback:', err);
+      setData({
+        videoId: 'R-2C2-dG-xY',
+        isLive: false,
+        title: 'من أرشيف الكنيسة',
+        status: 'لا يوجد بث مباشر الآن'
+      });
+      setError(false);
     } finally {
       setLoading(false);
     }

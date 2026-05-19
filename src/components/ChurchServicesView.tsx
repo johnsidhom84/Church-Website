@@ -10,8 +10,15 @@ import {
   Stethoscope,
   Trees
 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 export default function ChurchServicesView() {
+  useSEO({
+    title: 'خدماتنا المجتمعية - كنيسة مارمرقس بشبرا',
+    description: 'تعرف على الخدمات الطبية والتعليمية والروحية التي تقدمها كنيسة القديس مارمرقس بشبرا، مثل مستشفى القديس مرقس والحضانة.',
+    keywords: 'خدمات الكنيسة, مستشفى القديس مرقس, حضانة كنيسة مارمرقس, فيلا عرابي, مركز الغسيل الكلوي',
+  });
+
   const services = [
     {
       id: 'st-mark-hospital',

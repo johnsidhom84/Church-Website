@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 
+import announcement1 from '../images/Announcement_1.jpg';
+import announcement2 from '../images/Announcement_2.jpg';
+import announcement3 from '../images/Announcement_3.jpg';
+
 const images = [
-  '/assets/images/Announcement_1.jpg',
-  '/assets/images/Announcement_2.jpg',
-  '/assets/images/Announcement_3.jpg',
+  announcement1,
+  announcement2,
+  announcement3,
 ];
 
 export const AnnouncementSlider: React.FC = () => {

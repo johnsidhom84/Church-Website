@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect, useRef } from 'react';
 import { X, ZoomIn, ChevronRight, ChevronLeft, Maximize2 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 const GALLARY_IMAGES = [
   { id: '1', url: 'https://picsum.photos/seed/church1/1200/800', title: 'الباب الرئيسي', category: 'المبنى' },
@@ -15,6 +16,12 @@ const GALLARY_IMAGES = [
 ];
 
 export default function GalleryView() {
+  useSEO({
+    title: 'معرض الصور - كنيسة مارمرقس بشبرا',
+    description: 'شاهد ألبوم صور كنيسة القديس مارمرقس الرسولي بشبرا، جولة بصرية في رحاب الكنيسة والفن القبطي.',
+    keywords: 'صور الكنيسة, معرض الصور, كنيسة مارمرقس, الفن القبطي, أيقونات قبطية',
+  });
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<typeof GALLARY_IMAGES[0] | null>(null);
   const [direction, setDirection] = useState(0);

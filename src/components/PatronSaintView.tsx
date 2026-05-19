@@ -1,9 +1,16 @@
 import { motion } from 'motion/react';
 import { BookOpen, Star, MapPin, Anchor } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
-import stMarkPortrait from '../assets/images/st-mark-portrait.jpg';
+const stMarkPortrait = '/images/st-mark-portrait.jpg';
 
 export default function PatronSaintView() {
+  useSEO({
+    title: 'شفيع الكنيسة - مارمرقس الرسول',
+    description: 'تعرف على حياة القديس مارمرقس الرسول، كاروز الديار المصرية ومؤسس الكنيسة القبطية الأرثوذكسية.',
+    keywords: 'مارمرقس الرسول, القديس مرقس, إنجيل مرقس, كاروز الديار المصرية, قصة مارمرقس',
+  });
+
   return (
     <div className="max-w-4xl mx-auto space-y-16 pb-24 lg:pb-0">
       <motion.div 

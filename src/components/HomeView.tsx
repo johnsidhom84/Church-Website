@@ -2,13 +2,22 @@ import { motion } from 'motion/react';
 import { MapPin, Phone, BookOpen, ChevronLeft, Train, Bus, Car, Info } from 'lucide-react';
 import { LiveStreamWidget } from './LiveStreamWidget';
 import { AnnouncementSlider } from './AnnouncementSlider';
-import heroImg from '../assets/images/hero.jpg';
+import heroImg from '../images/hero.jpg';
+import { useSEO } from '../hooks/useSEO';
+
+const churchInteriorImg = heroImg; // Using same hero for now as fallback or specific interior if exists
 
 interface HomeViewProps {
   onTabChange?: (tab: string) => void;
 }
 
 export default function HomeView({ onTabChange }: HomeViewProps) {
+  useSEO({
+    title: 'الرئيسية - كنيسة مارمرقس بشبرا',
+    description: 'مرحباً بكم في كنيسة القديس مارمرقس الرسولي بشبرا. بيت الله المفتوح للجميع.',
+    keywords: 'كنيسة, مارمرقس, شبرا, الكنيسة القبطية الأرثوذكسية, قراءات اليوم, بث مباشر',
+  });
+
   return (
     <div className="space-y-12 pb-24 lg:pb-12 max-w-[1400px] mx-auto px-4">
       {/* Hero Section */}

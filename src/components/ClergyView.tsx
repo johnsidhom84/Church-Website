@@ -2,6 +2,7 @@ import { motion } from 'motion/react';
 import React from 'react';
 import { UserCheck, Calendar } from 'lucide-react';
 import { CLERGY_DATA, type Priest } from '../constants/priests';
+import { useSEO } from '../hooks/useSEO';
 
 const CLERGY = CLERGY_DATA;
 
@@ -25,6 +26,12 @@ const itemVariants = {
 };
 
 export default function ClergyView() {
+  useSEO({
+    title: 'الآباء الكهنة - كنيسة مارمرقس بشبرا',
+    description: 'تعرف على الآباء الكهنة الحاليين والسابقين الذين خدموا بكنيسة الشهيد العظيم مارمرقس الرسولي بشبرا.',
+    keywords: 'آباء הכنيسة, كهنة شبرا, كنيسة مارمرقس, آباء كنيسة مارمرقس بشبرا, إرشاد روحي',
+  });
+
   const parseDate = (dateStr: string) => {
     if (!dateStr) return new Date(2100, 0, 1); // Latest if no date
     const match = dateStr.match(/(\d+)\s+([^\s]+)\s+(\d+)/);
