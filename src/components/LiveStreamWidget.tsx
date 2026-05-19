@@ -6,6 +6,7 @@ interface YoutubeData {
   videoId: string;
   title: string;
   isLive: boolean;
+  isPlaylist?: boolean;
   status: string;
 }
 
@@ -19,30 +20,65 @@ export const LiveStreamWidget: React.FC = () => {
       const response = await fetch('/api/youtube/live');
       if (response.ok) {
         const result = await response.json();
+        // The API returns videoId properly when live or not
         setData(result);
         setError(false);
-      } else {
-        // Fallback for static hosting where /api doesn't exist
-        setData({
-          videoId: 'R-2C2-dG-xY',
-          isLive: false,
-          title: 'من أرشيف الكنيسة',
-          status: 'لا يوجد بث مباشر الآن'
-        });
-        setError(false);
+        setLoading(false);
+        return;
       }
     } catch (err) {
-      console.warn('Live stream API not available, using fallback:', err);
-      setData({
-        videoId: 'R-2C2-dG-xY',
-        isLive: false,
-        title: 'من أرشيف الكنيسة',
-        status: 'لا يوجد بث مباشر الآن'
-      });
-      setError(false);
-    } finally {
-      setLoading(false);
+      console.warn('Live stream API not available, using client-side playlist fallback...', err);
     }
+
+    // Client-side fallback for static hosting
+    try {
+      const channelId = 'UCmx-ea92VQN0Sv9haqEpceQ';
+      const urlToScrape = `https://www.youtube.com/channel/${channelId}/videos`;
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(urlToScrape)}`;
+      
+      const res = await fetch(proxyUrl);
+      if (res.ok) {
+        const data = await res.json();
+        const html = data.contents;
+        
+        if (html) {
+          const videoIdPattern = /"videoId":"([a-zA-Z0-9_-]{11})"/g;
+          const matches = Array.from(html.matchAll(videoIdPattern));
+          
+          for (let i = 0; i < Math.min(matches.length, 15); i++) {
+            const id = matches[i][1];
+            const index = html.indexOf(`"videoId":"${id}"`);
+            const context = html.substring(Math.max(0, index - 500), Math.min(html.length, index + 1500));
+            
+            if (!context.includes('upcomingEventData') && !context.includes('"style":"UPCOMING"')) {
+              setData({
+                videoId: id,
+                isLive: false,
+                isPlaylist: false,
+                title: 'من أرشيف الكنيسة',
+                status: 'لا يوجد بث مباشر الآن'
+              });
+              setError(false);
+              setLoading(false);
+              return;
+            }
+          }
+        }
+      }
+    } catch (clientErr) {
+      console.error('Client fallback scraping failed:', clientErr);
+    }
+
+    // Absolute fallback
+    setData({
+      videoId: 'k3Vqx6WM1A0',
+      isLive: false,
+      isPlaylist: false,
+      title: 'من أرشيف الكنيسة',
+      status: 'أحدث فيديوهات الكنيسة'
+    });
+    setError(false);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -99,7 +135,7 @@ export const LiveStreamWidget: React.FC = () => {
       <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white/50 bg-black">
         {data.videoId ? (
           <iframe
-            src={`https://www.youtube.com/embed/${data.videoId}?autoplay=${data.isLive ? '1' : '0'}&rel=0`}
+            src={data.isPlaylist ? `https://www.youtube.com/embed/videoseries?list=${data.videoId}&rel=0` : `https://www.youtube.com/embed/${data.videoId}?autoplay=${data.isLive ? '1' : '0'}&rel=0`}
             title={data.title || "YouTube video"}
             className="absolute inset-0 w-full h-full"
             allowFullScreen

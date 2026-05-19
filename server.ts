@@ -27,7 +27,7 @@ app.get('/api/health', (req, res) => res.json({ status: 'ok', time: new Date().t
 let youtubeCache: { data: any, timestamp: number } | null = null;
 const CACHE_TTL = 15 * 60 * 1000; // 15 minutes
 
-const FALLBACK_VIDEO_ID = 'R-2C2-dG-xY'; // Known recent video from St. Mark Shoubra
+const FALLBACK_VIDEO_ID = 'k3Vqx6WM1A0'; // Known recent video from St. Mark Shoubra
 
 // YouTube Live Status Route - Using RSS Feed and Page Scraping for reliability
 app.get('/api/youtube/live', async (req, res) => {

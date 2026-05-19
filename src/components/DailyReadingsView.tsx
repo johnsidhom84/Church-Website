@@ -41,13 +41,17 @@ export default function DailyReadingsView() {
     const fetchReadings = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/katamars');
-        
-        if (!response.ok) {
-          throw new Error('فشل في تحميل القراءات');
+        let rawData;
+        try {
+          const response = await fetch('/api/katamars');
+          if (!response.ok) throw new Error('Local API failed');
+          rawData = await response.json();
+        } catch (localErr) {
+          console.warn('Local proxy failed, trying external API direct...', localErr);
+          const extRes = await fetch('https://api.coptic.io/api/readings?detailed=true&lang=ar');
+          if (!extRes.ok) throw new Error('External API failed');
+          rawData = await extRes.json();
         }
-
-        const rawData = await response.json();
         
         const BIBLE_BOOKS_AR: Record<string, string> = {
           'Matthew': 'متى',
