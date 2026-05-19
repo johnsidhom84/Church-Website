@@ -107,6 +107,7 @@ export default function GalleryView() {
               alt={GALLARY_IMAGES[currentIndex].title}
               className="w-full h-full object-cover pointer-events-none"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
             
             {/* Image Overlay Info */}
@@ -179,7 +180,7 @@ export default function GalleryView() {
               idx === currentIndex ? 'border-amber-500 scale-110 shadow-lg' : 'border-transparent opacity-60 hover:opacity-100'
             }`}
           >
-            <img src={img.url} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+            <img src={img.url} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" loading="lazy" />
           </button>
         ))}
       </div>

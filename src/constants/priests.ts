@@ -1,7 +1,25 @@
 import frMarkosImg from '../assets/images/fr_markos_dawoud.jpg';
-import frEstafanosImg from '../assets/images/fr.estafanos_azer.jpg';
+import frEstafanosImg from '../assets/images/fr_estafanos_azer.jpg';
 import frYohanaImg from '../assets/images/fr_yohana_girgis.jpg';
-import frMikhailImg from '../assets/images/fr_mikhail_ibrahim.jpg';
+import frYouhanaMahfouzImg from '../assets/images/fr_youhana_mahfouz.jpg';
+import frYoussefImg from '../assets/images/fr_youssef_youssef.png';
+import frMorkosMonirImg from '../assets/images/fr_morkos_monir.png';
+import frMataJosephImg from '../assets/images/fr_mata_joseph.png';
+import frYouhanaSaadImg from '../assets/images/fr_youhana_saad.png';
+import frLokaFahmyImg from '../assets/images/fr_loka_fahmy.png';
+import frMinaMikhail from '../assets/images/fr_mina_mikhail.png';
+import frMikhailIbrahimImg from '../assets/images/fr_mikhail_ibrahim.jpg';
+import frMikhailNaguibImg from '../assets/images/fr_mikhail_naguib.png';
+import frBemanGeorgeImg from '../assets/images/fr_beman_george.png';
+import frMorkosFathyImg from '../assets/images/fr_morkos_fathy.png';
+import frLukaKostantinImg from '../assets/images/fr_luka_kostantin.png';
+import frMikhailMakarImg from '../assets/images/fr_mikhail_makar.png';
+import frBarsoumBoshraImg from '../assets/images/fr_barsoum_boshra.png';
+import frKyrillosKamalImg from '../assets/images/fr_kyrillos_kamal.png';
+import frAntoniosMofeedImg from '../assets/images/fr_antonios_mofeed.png';
+import frBishoyAhdyImg from '../assets/images/fr_bishoy_ahdy.png';
+
+const PRIEST_PLACEHOLDER = undefined;
 
 export interface Priest {
   name: string;
@@ -72,7 +90,7 @@ export const CLERGY_DATA: Priest[] = [
     promotion: 'مايو 1952 م.',
     status: 'تنيح',
     note: '',
-    image: frMikhailImg,
+    image: frMikhailIbrahimImg,
     title: 'سفير من السماء',
     summary: [
       'ولد عام 1899 واشتهر بلقب "سفير من السماء" لشفافيته الروحية العالية وعيشه حياة الإنجيل المعاش.',
@@ -88,111 +106,135 @@ export const CLERGY_DATA: Priest[] = [
     ordination: '28 مايو 1972 م.',
     promotion: '2 مارس 1975 م.',
     status: 'سابق',
-    note: 'يخدم بكنيسة أخرى'
+    note: 'يخدم بكنيسة أخرى',
+    image: frMinaMikhail
   },
   {
     name: 'أبونا القمص ميخائيل نجيب غالي',
     ordination: '13 إبريل 1975 م.',
     promotion: '3 يونيو 2003 م.',
     status: 'تنيح',
-    note: ''
+    note: '',
+    image: frMikhailNaguibImg
   },
   {
     name: 'أبونا القمص لوقا قسطنطين عوض الله',
     ordination: '14 يناير 1979 م.',
     promotion: '14 نوفمبر 1998 م.',
     status: 'تنيح',
-    note: ''
+    note: '',
+    image: frLukaKostantinImg
   },
   {
     name: 'أبونا القمص بيمن جورج سعيد عبد السيد',
     ordination: '19 فبراير 1988 م.',
     promotion: '17 مارس 2017 م.',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frBemanGeorgeImg
   },
   {
     name: 'أبونا القمص برسوم بشرى جرجس',
     ordination: '19 فبراير 1988 م.',
     promotion: '17 مارس 2017 م.',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frBarsoumBoshraImg
   },
   {
     name: 'أبونا القمص مرقس فتحي صادق حنا',
     ordination: '19 يونيو 1994 م.',
     promotion: '3 مارس 2013 م.',
     status: 'سابق',
-    note: 'يخدم بكنيسة أخرى'
+    note: 'يخدم بكنيسة أخرى',
+    image: frMorkosFathyImg
   },
   {
     name: 'أبونا القس يوسف يوسف يوسف رزق',
     ordination: '14 نوفمبر 1999 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frYoussefImg
   },
   {
     name: 'أبونا القس كيرلس كمال فخري سوريال',
     ordination: '7 يونيو 2009 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frKyrillosKamalImg
   },
   {
     name: 'أبونا القس أنطونيوس مفيد محارب',
     ordination: '7 يونيو 2009 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frAntoniosMofeedImg
   },
   {
     name: 'أبونا القس ميخائيل مقار ثابت قلته',
     ordination: '7 يونيو 2009 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frMikhailMakarImg
   },
   {
     name: 'أبونا القس مرقس منير سمير ميخائيل',
     ordination: '16 نوفمبر 2014 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frMorkosMonirImg
   },
   {
     name: 'أبونا القس يوحنا محفوظ',
     ordination: '16 نوفمبر 2014 م.',
     promotion: '',
     status: 'تنيح',
-    note: ''
+    note: '',
+    image: frYouhanaMahfouzImg
   },
   {
     name: 'أبونا القس متي جوزيف',
     ordination: '19 فبراير 2026 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frMataJosephImg
   },
   {
     name: 'أبونا القس لوقا فهمي',
     ordination: '19 فبراير 2026 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frLokaFahmyImg
   },
   {
     name: 'أبونا القس يوحنا سعد',
     ordination: '19 فبراير 2026 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frYouhanaSaadImg
   },
   {
     name: 'أبونا القس بيشوي عهدى',
-    ordination: '',
+    ordination: '26 نوفمبر 2022 م.',
     promotion: '',
     status: 'حالي',
-    note: ''
+    note: '',
+    image: frBishoyAhdyImg
+  },
+  {
+    name: 'أبونا القس فيلوباتير سامي',
+    ordination: '26 نوفمبر 2022 م.',
+    promotion: '',
+    status: 'حالي',
+    note: '',
+    image: PRIEST_PLACEHOLDER
   }
 ];

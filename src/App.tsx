@@ -3,14 +3,11 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import HomeView from './components/HomeView';
 import HistoryView from './components/HistoryView';
-import EventsView from './components/EventsView';
 import ClergyView from './components/ClergyView';
 import GalleryView from './components/GalleryView';
 import PatronSaintView from './components/PatronSaintView';
 import DailyReadingsView from './components/DailyReadingsView';
 import ChurchServicesView from './components/ChurchServicesView';
-import LocationView from './components/LocationView';
-import AnnouncementsView from './components/AnnouncementsView';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -23,11 +20,8 @@ export default function App() {
       case 'saint': return <PatronSaintView />;
       case 'readings': return <DailyReadingsView />;
       case 'services': return <ChurchServicesView />;
-      case 'events': return <EventsView />;
       case 'gallery': return <GalleryView />;
       case 'clergy': return <ClergyView />;
-      case 'location': return <LocationView />;
-      case 'announcements': return <AnnouncementsView />;
       default: return <HomeView />;
     }
   };
@@ -54,4 +48,3 @@ export default function App() {
     </div>
   );
 }
-

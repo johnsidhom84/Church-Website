@@ -1,9 +1,8 @@
 import { motion } from 'motion/react';
-import { MapPin, Phone, Heart, BookOpen, ChevronLeft } from 'lucide-react';
-import { AnnouncementsSlider } from './AnnouncementsSlider';
+import { MapPin, Phone, BookOpen, ChevronLeft, Train, Bus, Car, Info } from 'lucide-react';
 import { LiveStreamWidget } from './LiveStreamWidget';
+import { AnnouncementSlider } from './AnnouncementSlider';
 import heroImg from '../assets/images/hero.jpg';
-import logoImg from '../assets/images/logo.png';
 
 interface HomeViewProps {
   onTabChange?: (tab: string) => void;
@@ -69,9 +68,9 @@ export default function HomeView({ onTabChange }: HomeViewProps) {
         </button>
       </section>
 
-      {/* Announcements Slider Section */}
-      <section className="custom-panel !p-8 lg:!p-12">
-        <AnnouncementsSlider />
+      {/* Announcements Section */}
+      <section>
+        <AnnouncementSlider />
       </section>
 
       {/* Live Stream Section */}
@@ -80,31 +79,6 @@ export default function HomeView({ onTabChange }: HomeViewProps) {
       </section>
 
 
-      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { icon: Heart, title: 'المحبة', desc: 'نخدم الجميع بروح الحب والتواضع' },
-          { icon: logoImg, title: 'العبادة', desc: 'صلوات وطقوس كنسية يومية' },
-          { icon: Phone, title: 'الخدمة', desc: 'متواجدون دائماً للاستماع والإرشاد' },
-        ].map((item, i) => (
-          <motion.div 
-            key={i}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-            className="custom-panel text-center space-y-3 lg:space-y-4 !mb-0"
-          >
-            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white text-gold rounded-full flex items-center justify-center mx-auto shadow-sm border border-gold/10 p-1">
-              {typeof item.icon === 'string' ? (
-                <img src={item.icon} alt={item.title} className="w-6 h-6 lg:w-8 lg:h-8 object-contain" />
-              ) : (
-                <item.icon className="w-5 h-5 lg:w-6 lg:h-6" />
-              )}
-            </div>
-            <h3 className="arabic-serif text-xl lg:text-2xl font-bold text-stone-800">{item.title}</h3>
-            <p className="arabic-sans text-stone-500 text-sm lg:text-base">{item.desc}</p>
-          </motion.div>
-        ))}
-      </section>
 
       {/* Mission Section */}
       <section className="bg-gold rounded-[2.5rem] lg:rounded-[3.5rem] p-8 lg:p-14 text-white overflow-hidden relative shadow-xl">
@@ -132,6 +106,51 @@ export default function HomeView({ onTabChange }: HomeViewProps) {
               className="w-full h-full object-cover"
             />
           </div>
+        </div>
+      </section>
+
+      {/* Map Section */}
+      <section className="space-y-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div className="space-y-1 text-right">
+            <h2 className="arabic-serif text-2xl lg:text-3xl font-bold text-stone-900">موقعنا وكيفية الوصول</h2>
+            <p className="arabic-sans text-stone-500 text-xs lg:text-sm">تشرفنا دائماً زيارتكم في أي وقت</p>
+          </div>
+          <div className="flex items-center gap-2 bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
+            <Info className="w-4 h-4 text-stone-400" />
+            <p className="arabic-sans text-[10px] text-stone-500" dir="rtl">
+              ننصح باستعمال خرائط جوجل لسهولة الوصول.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { icon: Train, title: 'مترو الأنفاق', desc: 'محطة الخلفاوي', color: 'bg-blue-50 text-blue-600' },
+            { icon: Bus, title: 'الحافلات', desc: 'أي حافلة تمر بشارع شبرا الرئيسي', color: 'bg-green-50 text-green-600' },
+            { icon: Car, title: 'السيارات', desc: 'شارع الشيخ أحمد رافع، الساحل', color: 'bg-gold/10 text-gold' },
+          ].map((item, idx) => (
+            <div key={idx} className="custom-panel !p-4 flex items-center gap-4 !mb-0 group hover:border-gold/30 transition-colors">
+              <div className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform`}>
+                <item.icon className="w-5 h-5" />
+              </div>
+              <div className="text-right" dir="rtl">
+                <h4 className="arabic-serif font-bold text-stone-800 text-sm">{item.title}</h4>
+                <p className="arabic-sans text-[10px] text-stone-500">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="w-full aspect-[21/9] min-h-[300px] sm:min-h-[400px] bg-stone-100 rounded-[2.5rem] overflow-hidden shadow-md border-4 border-white relative">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3452.336153724395!2d31.246416624536643!3d30.084534716654!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583f8ea9b3dc37%3A0xe54e5b62b339462c!2sSt.%20Mark%20Coptic%20Orthodox%20Church%2C%20Shubra!5e0!3m2!1sen!2seg!4v1713626000000!5m2!1sen!2seg" 
+            className="absolute inset-0 w-full h-full border-0"
+            allowFullScreen={true} 
+            loading="lazy" 
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Church Map Location"
+          ></iframe>
         </div>
       </section>
     </div>

@@ -19,16 +19,13 @@ export default function Footer({ onTabChange }: FooterProps) {
     {
       title: 'الخدمات',
       links: [
-        { id: 'events', label: 'مواعيد القداسات والخدمات' },
         { id: 'services', label: 'خدمات الكنيسة والأنشطة' },
-        { id: 'announcements', label: 'آخر الإعلانات والتنبيهات' },
       ]
     },
     {
       title: 'روابط هامة',
       links: [
         { id: 'readings', label: 'القراءات اليومية والسنكسار' },
-        { id: 'location', label: 'موقع الكنيسة (الخريطة)' },
       ]
     }
   ];

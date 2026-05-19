@@ -1,6 +1,8 @@
 import { motion } from 'motion/react';
 import { BookOpen, Star, MapPin, Anchor } from 'lucide-react';
 
+import stMarkPortrait from '../assets/images/st-mark-portrait.jpg';
+
 export default function PatronSaintView() {
   return (
     <div className="max-w-4xl mx-auto space-y-16 pb-24 lg:pb-0">
@@ -20,12 +22,11 @@ export default function PatronSaintView() {
         </p>
       </motion.div>
 
-      <section className="relative overflow-hidden rounded-[3rem] aspect-[21/9] bg-stone-200 shadow-2xl border-4 border-white/50">
+      <section className="relative overflow-hidden rounded-[3rem] aspect-[4/3] md:aspect-video bg-stone-200 shadow-2xl border-4 border-white/50">
         <img 
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/StMarkEvangelist.jpg/1200px-StMarkEvangelist.jpg" 
+          src={stMarkPortrait} 
           alt="أيقونة القديس مارمرقس" 
-          className="w-full h-full object-cover"
-          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-[center_15%] lg:object-[center_20%]"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent flex items-end p-8 lg:p-16">
           <div className="text-white space-y-2">

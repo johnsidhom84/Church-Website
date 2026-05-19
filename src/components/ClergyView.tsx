@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 import React from 'react';
 import { UserCheck, Calendar } from 'lucide-react';
-import { CLERGY_DATA } from '../constants/priests';
+import { CLERGY_DATA, type Priest } from '../constants/priests';
 
 const CLERGY = CLERGY_DATA;
 
@@ -25,8 +25,70 @@ const itemVariants = {
 };
 
 export default function ClergyView() {
-  const currentClergy = CLERGY.filter(p => p.status === 'حالي');
+  const parseDate = (dateStr: string) => {
+    if (!dateStr) return new Date(2100, 0, 1); // Latest if no date
+    const match = dateStr.match(/(\d+)\s+([^\s]+)\s+(\d+)/);
+    if (!match) {
+      const yearOnly = dateStr.match(/\d{4}/);
+      return yearOnly ? new Date(parseInt(yearOnly[0]), 0, 1) : new Date(2100, 0, 1);
+    }
+    
+    const day = parseInt(match[1]);
+    const monthStr = match[2];
+    const year = parseInt(match[3]);
+    
+    const months: { [key: string]: number } = {
+      'يناير': 0, 'فبراير': 1, 'مارس': 2, 'إبريل': 3, 'مايو': 4, 'يونيو': 5,
+      'يوليو': 6, 'أغسطس': 7, 'سبتمبر': 8, 'أكتوبر': 9, 'نوفمبر': 10, 'ديسمبر': 11
+    };
+    
+    return new Date(year, months[monthStr] ?? 0, day);
+  };
+
+  const currentClergy = CLERGY
+    .filter(p => p.status === 'حالي')
+    .sort((a, b) => parseDate(a.ordination).getTime() - parseDate(b.ordination).getTime());
+  
   const pastClergy = CLERGY.filter(p => p.status !== 'حالي');
+
+  const PriestImage = ({ priest, icon: Icon }: { priest: Priest, icon: React.ElementType }) => {
+    const [hasError, setHasError] = React.useState(false);
+
+    const getInitials = (name: string) => {
+      const parts = name.split(' ');
+      if (parts.length >= 2) {
+        return parts[parts.length - 2][0] + parts[parts.length - 1][0];
+      }
+      return name[0];
+    };
+
+    if (priest.image && !hasError) {
+      return (
+        <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl overflow-hidden border-4 border-white shadow-md mb-2 bg-white flex items-center justify-center relative mx-auto">
+          <img 
+            src={priest.image} 
+            alt={priest.name} 
+            className="w-full h-full object-contain p-1"
+            onError={() => {
+              setHasError(true);
+            }}
+            loading="lazy"
+          />
+        </div>
+      );
+    }
+
+    return (
+      <div className="w-32 h-32 md:w-40 md:h-40 rounded-2xl bg-stone-50 flex flex-col items-center justify-center mb-2 border-4 border-white shadow-sm group mx-auto">
+        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white flex items-center justify-center mb-1 group-hover:scale-110 transition-transform border border-stone-100 shadow-inner">
+          <Icon className="w-8 h-8 md:w-10 md:h-10 text-stone-300" />
+        </div>
+        <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter opacity-50">
+          {getInitials(priest.name)}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-16 pb-24 lg:pb-0 text-right" dir="rtl">
@@ -49,22 +111,20 @@ export default function ClergyView() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="flex flex-wrap justify-center gap-6"
         >
           {currentClergy.map((priest, i) => (
             <motion.div 
               key={i}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
-              className="custom-panel space-y-4 !mb-0 transition-transform"
+              className="custom-panel space-y-4 !mb-0 transition-transform flex flex-col items-center text-center w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm"
             >
-              <div className="flex items-center gap-4 border-b border-stone-50 pb-4">
-                <div className="w-12 h-12 bg-gold/10 rounded-2xl flex items-center justify-center text-gold">
-                  <UserCheck className="w-6 h-6" />
-                </div>
+              <PriestImage priest={priest} icon={UserCheck} />
+              <div className="border-b border-stone-50 pb-4 w-full">
                 <h3 className="arabic-serif text-xl font-bold text-stone-900">{priest.name}</h3>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 w-full">
                 <div className="flex justify-between items-center text-sm">
                   <span className="arabic-sans text-stone-400">تاريخ السيامة</span>
                   <span className="arabic-sans font-bold text-stone-700">{priest.ordination}</span>
@@ -93,35 +153,22 @@ export default function ClergyView() {
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="flex flex-wrap justify-center gap-6"
         >
           {pastClergy.map((priest, i) => (
             <motion.div 
               key={i}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
-              className={`p-6 rounded-[2rem] border transition-all space-y-4 flex flex-col items-center text-center ${
+              className={`p-6 rounded-[2rem] border transition-all space-y-4 flex flex-col items-center text-center w-full md:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-1.5rem)] max-w-sm ${
                 priest.status === 'تنيح' 
                 ? 'bg-gold/5 border-gold/10 shadow-sm' 
                 : 'bg-transparent border-stone-200/60'
               }`}
             >
-              {priest.image ? (
-                <div className="w-32 h-32 rounded-2xl overflow-hidden border-4 border-white shadow-md mb-2 bg-white flex items-center justify-center">
-                  <img src={priest.image} alt={priest.name} className="w-full h-full object-contain" />
-                </div>
-              ) : (
-                <div className="w-32 h-32 rounded-2xl bg-stone-100 flex items-center justify-center mb-2 border-4 border-white shadow-sm">
-                   <Calendar className="w-10 h-10 text-stone-200" />
-                </div>
-              )}
+              <PriestImage priest={priest} icon={Calendar} />
               
               <div className="flex flex-col items-center gap-4 border-b border-stone-50/50 pb-4 w-full">
-                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
-                  priest.status === 'تنيح' ? 'bg-stone-800 text-stone-200' : 'bg-stone-100 text-stone-500'
-                }`}>
-                  <Calendar className="w-6 h-6" />
-                </div>
                 <div>
                   <h3 className="arabic-serif text-xl font-bold text-stone-900">{priest.name}</h3>
                   <div className="flex justify-center gap-2 mt-1">

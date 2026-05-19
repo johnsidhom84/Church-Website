@@ -16,6 +16,17 @@
   --radius-panel: 24px;
 }
 
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.shimmer {
+  background: linear-gradient(to right, #f6f7f8 4%, #edeef1 25%, #f6f7f8 36%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite linear;
+}
+
 :root {
   --page-bg-top: #ffffff;
   --page-bg-bottom: #f5f0e6;

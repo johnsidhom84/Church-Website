@@ -149,7 +149,7 @@ export default function ChurchServicesView() {
           <div className="order-1 lg:order-2">
             <div className="relative rounded-[2.5rem] overflow-hidden aspect-[4/3] lg:aspect-square">
               <img 
-                src="https://images.unsplash.com/photo-1544365391-8299b70ad008?q=80&w=1000" 
+                src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1000&auto=format&fit=crop" 
                 alt="Kindergarten" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"

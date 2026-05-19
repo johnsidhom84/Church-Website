@@ -1,9 +1,57 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { BookOpen, Calendar, Award, Building2, Users, Star, ShieldCheck, Image as ImageIcon, Loader2, X, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import heroImg from '../assets/images/hero.jpg';
 import logoImg from '../assets/images/logo.png';
 import { CLERGY_DATA, Priest } from '../constants/priests';
+
+const PriestCard: React.FC<{ father: Priest, onSelect: (p: Priest) => void }> = ({ father, onSelect }) => {
+  const [hasError, setHasError] = useState(false);
+
+  const getInitials = (name: string) => {
+    const parts = name.split(' ');
+    if (parts.length >= 2) {
+      return parts[parts.length - 2][0] + parts[parts.length - 1][0];
+    }
+    return name[0];
+  };
+
+  return (
+    <motion.div 
+      whileHover={{ y: -10 }}
+      onClick={() => onSelect(father)}
+      className="custom-panel !p-6 !mb-0 text-center space-y-4 transition-all cursor-pointer group"
+    >
+      <div className="relative w-32 h-32 mx-auto rounded-2xl overflow-hidden shadow-md border-4 border-white bg-stone-50 flex items-center justify-center">
+        {father.image && !hasError ? (
+          <img 
+            src={father.image}
+            alt={father.name}
+            className="w-full h-full object-contain group-hover:scale-110 transition-all duration-500"
+            onError={() => {
+              setHasError(true);
+            }}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-stone-100 to-stone-200 flex flex-col items-center justify-center">
+            <Users className="w-8 h-8 text-stone-300 mb-1" />
+            <span className="text-[10px] font-bold text-stone-400 uppercase tracking-tighter opacity-50">
+              {getInitials(father.name)}
+            </span>
+          </div>
+        )}
+      </div>
+      <h3 className="arabic-serif text-xl font-bold text-stone-800">{father.name}</h3>
+      <div className="text-gold font-bold arabic-sans text-[10px] uppercase tracking-widest bg-gold/5 px-3 py-1 rounded-full inline-block">
+        {father.title}
+      </div>
+      <p className="arabic-sans text-stone-500 text-xs leading-relaxed line-clamp-2">
+        {father.summary?.[0] || 'سيرة عطرة ومسيرة حافلة بالعطاء في تاريخ الكنيسة.'}
+      </p>
+    </motion.div>
+  );
+};
 
 export default function HistoryView() {
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
@@ -166,27 +214,7 @@ export default function HistoryView() {
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {mainFathers.map((father) => (
-            <motion.div 
-              key={father.name}
-              whileHover={{ y: -10 }}
-              onClick={() => setSelectedPriest(father)}
-              className="custom-panel !p-6 !mb-0 text-center space-y-4 transition-all cursor-pointer group"
-            >
-              <div className="relative w-32 h-32 mx-auto rounded-2xl overflow-hidden shadow-md border-4 border-white bg-white flex items-center justify-center">
-                <img 
-                  src={father.image}
-                  alt={father.name}
-                  className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                />
-              </div>
-              <h3 className="arabic-serif text-xl font-bold text-stone-800">{father.name}</h3>
-              <div className="text-gold font-bold arabic-sans text-[10px] uppercase tracking-widest bg-gold/5 px-3 py-1 rounded-full inline-block">
-                {father.title}
-              </div>
-              <p className="arabic-sans text-stone-500 text-xs leading-relaxed line-clamp-2">
-                {father.summary?.[0] || 'سيرة عطرة ومسيرة حافلة بالعطاء في تاريخ الكنيسة.'}
-              </p>
-            </motion.div>
+            <PriestCard key={father.name} father={father} onSelect={setSelectedPriest} />
           ))}
         </div>
       </section>
@@ -221,13 +249,17 @@ export default function HistoryView() {
                 <div className="bg-stone-50 p-8 pt-12 flex flex-col items-center text-center space-y-6 relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 blur-2xl rounded-full -mr-16 -mt-16" />
                   
-                  {selectedPriest.image && (
+                  {selectedPriest.image ? (
                     <div className="w-48 h-48 rounded-[2.5rem] overflow-hidden border-8 border-white shadow-xl relative z-10 bg-white">
                       <img 
                         src={selectedPriest.image} 
                         alt={selectedPriest.name} 
                         className="w-full h-full object-contain"
                       />
+                    </div>
+                  ) : (
+                    <div className="w-48 h-48 rounded-[2.5rem] bg-gradient-to-br from-stone-100 to-stone-200 border-8 border-white shadow-xl relative z-10 flex items-center justify-center">
+                      <Users className="w-16 h-16 text-stone-300" />
                     </div>
                   )}
 

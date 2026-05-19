@@ -84,14 +84,19 @@ export const LiveStreamWidget: React.FC = () => {
       </div>
 
       <div className="relative w-full max-w-4xl mx-auto aspect-video rounded-[2rem] overflow-hidden shadow-2xl border-4 border-white/50 bg-black">
-        <iframe
-          src={`https://www.youtube.com/embed/${data.videoId}?autoplay=${data.isLive ? '1' : '0'}&rel=0`}
-          title={data.title || "YouTube video"}
-          className="absolute inset-0 w-full h-full"
-          allowFullScreen
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-        />
+        {data.videoId ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${data.videoId}?autoplay=${data.isLive ? '1' : '0'}&rel=0`}
+            title={data.title || "YouTube video"}
+            className="absolute inset-0 w-full h-full"
+            allowFullScreen
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-stone-900">
+            <p className="arabic-sans text-stone-400">الفيديو غير متوفر حالياً</p>
+          </div>
+        )}
       </div>
 
       {!data.isLive && (
