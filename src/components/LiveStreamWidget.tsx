@@ -27,55 +27,34 @@ export const LiveStreamWidget: React.FC = () => {
         return;
       }
     } catch (err) {
-      console.warn('Live stream API not available, using client-side playlist fallback...', err);
+      console.warn('Live stream API not available, using client-side dynamic fallback...', err);
     }
 
-    // Client-side fallback for static hosting
-    try {
-      const channelId = 'UCmx-ea92VQN0Sv9haqEpceQ';
-      const urlToScrape = `https://www.youtube.com/channel/${channelId}/videos`;
-      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(urlToScrape)}`;
-      
-      const res = await fetch(proxyUrl);
-      if (res.ok) {
-        const data = await res.json();
-        const html = data.contents;
-        
-        if (html) {
-          const videoIdPattern = /"videoId":"([a-zA-Z0-9_-]{11})"/g;
-          const matches = Array.from(html.matchAll(videoIdPattern));
-          
-          for (let i = 0; i < Math.min(matches.length, 15); i++) {
-            const id = matches[i][1];
-            const index = html.indexOf(`"videoId":"${id}"`);
-            const context = html.substring(Math.max(0, index - 500), Math.min(html.length, index + 1500));
-            
-            if (!context.includes('upcomingEventData') && !context.includes('"style":"UPCOMING"')) {
-              setData({
-                videoId: id,
-                isLive: false,
-                isPlaylist: false,
-                title: 'من أرشيف الكنيسة',
-                status: 'لا يوجد بث مباشر الآن'
-              });
-              setError(false);
-              setLoading(false);
-              return;
-            }
-          }
-        }
-      }
-    } catch (clientErr) {
-      console.error('Client fallback scraping failed:', clientErr);
-    }
+    // Absolute fallback - dynamically varies twice a day
+    const FALLBACK_VIDEOS = [
+      { videoId: 'i6VfdCQAAYw', isPlaylist: false, title: 'قداس عيد الميلاد 1987 - القمص إسطفانوس عازر والقمص لوقا قسطنطين', status: 'أرشيف القداسات التاريخية' },
+      { videoId: 'EXhXc86jP5M', isPlaylist: false, title: 'قداس عيد القيامة 1982 ج1 - ألبوم تراث الكنيسة', status: 'أرشيف القداسات التاريخية' },
+      { videoId: '46xBUj-G80Y', isPlaylist: false, title: 'قداس عيد القيامة 1982 ج2 - ألبوم تراث الكنيسة', status: 'أرشيف القداسات التاريخية' },
+      { videoId: 'zLsEvABonTA', isPlaylist: false, title: 'التوزيع - القمص إسطفانوس عازر - يوم أحد الشعانين لعام 1987', status: 'ألحان وتراث كنسي' },
+      { videoId: 'B59t0ih8ddg', isPlaylist: false, title: 'صلاة اللقان - خميس العهد سنة 1987 - القمص إسطفانوس عازر', status: 'صلوات طقسية نادرة' },
+      { videoId: 'enY5_FbVXk4', isPlaylist: false, title: 'جزء من القداس الإلهي (ارحمنا) - القمص إسطفانوس عازر', status: 'تراث وألحان الآباء' },
+      { videoId: 'k3Vqx6WM1A0', isPlaylist: false, title: 'عظة برمون عيد الغطاس - الحبر الجليل الأنبا أنجيلوس أسقف عام شبرا الشمالية', status: 'تعليم وعظات حية' },
+      { videoId: 'I3apMyTGla8', isPlaylist: false, title: 'قداس عيد القيامة المجيد ٢٠١٩ - كنيسة مارمرقس بشبرا', status: 'قداسات الأعياد' },
+      { videoId: 'TPbibrU0Ncc', isPlaylist: false, title: 'قداس عيد الميلاد المجيد بكنيسة مارمرقس بشبرا لعام 2016', status: 'قداسات الأعياد' }
+    ];
 
-    // Absolute fallback
+    const now = new Date();
+    const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 1).getTime()) / (24 * 60 * 60 * 1000));
+    const dayPeriod = now.getHours() >= 12 ? 1 : 0;
+    const fallbackIndex = (dayOfYear * 2 + dayPeriod) % FALLBACK_VIDEOS.length;
+    const selectedFallback = FALLBACK_VIDEOS[fallbackIndex];
+
     setData({
-      videoId: 'k3Vqx6WM1A0',
+      videoId: selectedFallback.videoId,
       isLive: false,
-      isPlaylist: false,
-      title: 'من أرشيف الكنيسة',
-      status: 'أحدث فيديوهات الكنيسة'
+      isPlaylist: selectedFallback.isPlaylist || false,
+      title: selectedFallback.title,
+      status: selectedFallback.status
     });
     setError(false);
     setLoading(false);

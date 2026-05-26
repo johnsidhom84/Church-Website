@@ -3,7 +3,7 @@ import frEstafanosImg from '../images/fr_estafanos_azer.png';
 import frYoussefImg from '../images/fr_youssef_youssef.png';
 import frMorkosMonirImg from '../images/fr_morkos_monir.png';
 import frMataJosephImg from '../images/fr_mata_joseph.png';
-import frYouhanaSaadImg from '../images/fr_youhana_saad.png';
+import frYouhanaSaadImg from '../images/fr_youhana_saad.jpeg';
 import frLokaFahmyImg from '../images/fr_loka_fahmy.png';
 import frMinaMikhail from '../images/fr_mina_mikhail.png';
 import frMikhailIbrahimImg from '../images/fr_mikhail_ibrahim.png';
@@ -18,6 +18,7 @@ import frAntoniosMofeedImg from '../images/fr_antonios_mofeed.png';
 import frBishoyAhdyImg from '../images/fr_bishoy_ahdy.png';
 import frYouhanaMahfouzImg from '../images/fr_youhana_mahfouz.jpg';
 import frYohanaImg from '../images/fr_yohana_girgis.jpg';
+import frPhilopaterSamyImg from '../images/fr_philopater_samy.jpg';
 
 // missing files, use undefined
 const PRIEST_PLACEHOLDER = undefined;
@@ -238,6 +239,6 @@ export const CLERGY_DATA: Priest[] = [
     promotion: '',
     status: 'حالي',
     note: '',
-    image: PRIEST_PLACEHOLDER
+    image: frPhilopaterSamyImg
   }
 ];

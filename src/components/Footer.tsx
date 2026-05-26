@@ -1,5 +1,5 @@
 import { MapPin, Phone, Mail, ChevronLeft, Facebook, Youtube, Instagram } from 'lucide-react';
-const logoImg = '/images/logo.png';
+import logoImg from '../images/logo.png';
 
 interface FooterProps {
   onTabChange: (tab: string) => void;

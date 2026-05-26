@@ -1,8 +1,8 @@
+import React from 'react';
 import { motion } from 'motion/react';
 import { BookOpen, Star, MapPin, Anchor } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
-
-const stMarkPortrait = '/images/st-mark-portrait.jpg';
+import stMarkLandscape from '../images/st-mark-landscape.png';
 
 export default function PatronSaintView() {
   useSEO({
@@ -31,11 +31,11 @@ export default function PatronSaintView() {
 
       <section className="relative overflow-hidden rounded-[3rem] aspect-[4/3] md:aspect-video bg-stone-200 shadow-2xl border-4 border-white/50">
         <img 
-          src={stMarkPortrait} 
+          src={stMarkLandscape}
           alt="أيقونة القديس مارمرقس" 
-          className="w-full h-full object-cover object-[center_15%] lg:object-[center_20%]"
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/40 to-transparent flex items-end p-8 lg:p-16">
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-900/90 via-stone-900/30 to-transparent flex items-end p-8 lg:p-16">
           <div className="text-white space-y-2">
             <h2 className="arabic-serif text-3xl font-bold italic">"سلام لمارمرقس ناظر الإله"</h2>
             <p className="arabic-sans opacity-80 text-sm">من تماجيد الكنيسة القبطية</p>
@@ -109,10 +109,9 @@ export default function PatronSaintView() {
         <div className="hidden lg:block relative">
           <div className="absolute inset-0 bg-amber-200 rotate-6 rounded-[2rem]" />
           <img 
-            src="https://upload.wikimedia.org/wikipedia/commons/4/41/Saint_Mark_the_Evangelist_Icon.jpg" 
+            src={stMarkLandscape}
             alt="أيقونة روحية للقديس مارمرقس" 
             className="relative z-10 w-full h-full object-cover rounded-[2rem] shadow-xl border-4 border-white"
-            referrerPolicy="no-referrer"
           />
         </div>
       </section>
